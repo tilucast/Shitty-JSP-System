@@ -15,7 +15,7 @@
 >
 	<main class="flex flex-col justify-center items-center h-full min-h-screen font-mono">
 		
-		<h1 class="text-3xl mb-4 text-blue-400 font-semibold">Shitty JSP Sistem</h1>
+		<h1 class="text-3xl mb-4 text-blue-400 font-semibold">Shitty JSP System</h1>
 		
 		<h4 class="text-red-900 text-center font-semibold mb-4">${Message}</h4>
 		

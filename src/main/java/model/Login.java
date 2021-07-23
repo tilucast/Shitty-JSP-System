@@ -6,8 +6,16 @@ public class Login implements Serializable{
 
 	private static final long serialVersionUID = 1L;
 	
+	private Long id;
+	private String email;
 	private String login;
 	private String password;
+	
+	public Login(String login, String email, String password) {
+		this.login = login;
+		this.email = email;
+		this.password = password;
+	}
 	
 	public Login(String login, String password) {
 		this.login = login;
@@ -28,6 +36,23 @@ public class Login implements Serializable{
 	
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	@Override

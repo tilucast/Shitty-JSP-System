@@ -7,10 +7,13 @@
 		<filter-name>FilterAuthenticate</filter-name>
 		<filter-class>Filter.FilterAuthenticate</filter-class>
 	</filter>
+	
 	<filter-mapping>
 		<filter-name>FilterAuthenticate</filter-name>
 		<url-pattern>/FilterAuthenticate</url-pattern>
 	</filter-mapping>
+	
+	
 
 	
 	<welcome-file-list>

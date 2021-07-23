@@ -24,9 +24,9 @@
                                     </div>
                                 </div>
                                 <div class="form-group form-primary">
-                                    <input id="username" type="text" name="username" class="form-control" required="">
+                                    <input id="login" type="text" name="login" class="form-control" value="${FormFieldsInfo.login}" required="">
                                     <span class="form-bar"></span>
-                                    <label class="float-label">Choose Username</label>
+                                    <label class="float-label">Choose Login</label>
                                 </div>
                                 
                                 <!-- 
@@ -36,6 +36,12 @@
                                     <label class="float-label">Your Email Address</label>
                                	 	</div>
                                  -->
+                                 
+                                  <div class="form-group form-primary">
+                                    <input id="email" type="email" name="email" class="form-control" value="${FormFieldsInfo.email}" required="">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label">Choose E-mail</label>
+                                </div>
                                 
                                 <div class="row">
                                     <div class="col-sm-6">
@@ -55,7 +61,7 @@
                                     </div>
                                 </div>
                                 
-                                <p id="form-message"></p>
+                                <p style="color: crimson; font-weight: 500;" id="form-message"> ${Message} </p>
                                 
                                 <!-- <div class="row m-t-25 text-left">
                                     <div class="col-md-12">
@@ -85,6 +91,7 @@
                                 </div>
                                 <hr/>
                                 <div class="row">
+                                	<p style="color: green; font-weight: 500; margin-left: 20px;" id="success"> ${Success} </p>
                                     <div class="col-md-10">
                                         <p class="text-inverse text-left m-b-0">Thank you.</p>
                                         <p class="text-inverse text-left"><a href="index.jsp"><b>Back to website</b></a></p>
@@ -105,26 +112,28 @@
 <jsp:include page="principal/JsScripts.jsp"></jsp:include>
 <script>
 
-	const form = document.querySelector("form");
 	const password1 = document.querySelector("#password")
 	const password2 = document.querySelector("#confirm-password")
 	const button = document.querySelector("#submit-button")
 	const formMessage = document.querySelector("#form-message")
 	
-	password2.addEventListener("keydown", function(event){
+	function validatePasswords(passwordInput) {
 		
-		if(password1.value !== this.value){
-			console.log("Both password fields should be equal.")
+		if(password1.value !== password2.value){
 			button.disabled = true;
-			formMessage.textContent = "Both password fields should be equal."
+			formMessage.textContent = "Both password fields should be equal!"
 			
 		} else{
 			button.disabled = false;
 			formMessage.textContent = ""
 			
 		}
-		
-	})
+	}
+	
+	password1.addEventListener("keydown",validatePasswords)
+	password1.addEventListener("keyup", validatePasswords)
+	password2.addEventListener("keydown",  validatePasswords)
+	password2.addEventListener("keyup", validatePasswords)
 	
 </script>
 </body>
