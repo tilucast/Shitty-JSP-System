@@ -25,9 +25,15 @@ public class ServletLogin extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		System.out.println("Get request");
-		request.getRequestDispatcher("/principal/principal.jsp").forward(request, response);
-		return;
+		String action = request.getParameter("action");
+		
+		if(action != null && action.equals("logout") && !action.isEmpty()) {
+			request.getSession().invalidate();
+			request.getRequestDispatcher("/index.jsp").forward(request, response);
+			return;
+		}
+		
+		doPost(request, response);
 	}
 
 	
@@ -40,6 +46,11 @@ public class ServletLogin extends HttpServlet {
 			String senha = request.getParameter("password");
 			String url = request.getParameter("url");
 			Login loginCredentials = new Login(login, senha);
+			
+			if((login == null && senha == null) || login == null || senha == null) {
+				login = "";
+				senha = "";
+			}
 			
 			if(login.isEmpty() || senha.isEmpty() || !loginRepository.authenticate(loginCredentials)) {
 				
@@ -55,6 +66,7 @@ public class ServletLogin extends HttpServlet {
 			}
 			
 			request.getSession().setAttribute("user", loginCredentials);
+			request.getSession().setAttribute("userName", loginCredentials.getLogin());
 			RequestDispatcher redirect = request.getRequestDispatcher(url);
 			redirect.forward(request, response);
 			
