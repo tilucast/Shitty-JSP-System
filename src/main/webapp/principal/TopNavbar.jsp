@@ -91,7 +91,7 @@
                           <li class="user-profile header-notification">
                               <a href="#!" class="waves-effect waves-light">
                                   <img src="<%= request.getContextPath() %>/assets/images/avatar-4.jpg" class="img-radius" alt="User-Profile-Image">
-                                  <span> <%= session.getAttribute("userName") %> </span>
+                                  <span> ${ user.getLogin() } </span>
                                   <i class="ti-angle-down"></i>
                               </a>
                               <ul class="show-notification profile-notification">
@@ -101,7 +101,7 @@
                                       </a>
                                   </li>
                                   <li class="waves-effect waves-light">
-                                      <a href="user-profile.html">
+                                      <a href="<%= request.getContextPath() %>/principal/profile.jsp">
                                           <i class="ti-user"></i> Profile
                                       </a>
                                   </li>

@@ -52,7 +52,9 @@ public class ServletLogin extends HttpServlet {
 				senha = "";
 			}
 			
-			if(login.isEmpty() || senha.isEmpty() || !loginRepository.authenticate(loginCredentials)) {
+			Login currentUser = loginRepository.authenticate(loginCredentials);
+			
+			if(login.isEmpty() || senha.isEmpty() || currentUser.getId() == null) {
 				
 				RequestDispatcher redirect = request.getRequestDispatcher("/index.jsp");
 				request.setAttribute("Message", "Login and/or password are either incorrect, or were not provided.");
@@ -65,8 +67,7 @@ public class ServletLogin extends HttpServlet {
 				url = "/principal/principal.jsp";
 			}
 			
-			request.getSession().setAttribute("user", loginCredentials);
-			request.getSession().setAttribute("userName", loginCredentials.getLogin());
+			request.getSession().setAttribute("user", currentUser);
 			RequestDispatcher redirect = request.getRequestDispatcher(url);
 			redirect.forward(request, response);
 			

@@ -2,11 +2,9 @@ package servlets;
 
 import java.io.IOException;
 
-import java.sql.Connection;
 import java.sql.SQLException;
 
 import DAO.UserRepository;
-import connection.SingleConnection;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -15,20 +13,13 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.Login;
 
-/* 
- * Notes about this Servlet. There is no Filter behind the createUser Route. So, i'm setting and rolling back the connection here.
- * Probably not a very good design, but i don't know how to fix it.
- * 
- * */
 
-@WebServlet(urlPatterns= {"/ServletCreateUser"})
-public class ServletCreateUser extends HttpServlet {
+@WebServlet(urlPatterns= {"/principal/ServletUpdateUser"})
+public class ServletUpdateUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserRepository userRepository = new UserRepository();
-	
-	private static Connection connection = SingleConnection.getConnection();
 
-    public ServletCreateUser() {
+    public ServletUpdateUser() {
         
     }
 
@@ -46,6 +37,7 @@ public class ServletCreateUser extends HttpServlet {
 			String email = request.getParameter("email");
 			String password = request.getParameter("password");
 			String confirmPassword = request.getParameter("confirm-password");
+			String currentEmail = (String) ((Login) request.getSession().getAttribute("user")).getEmail();
 			
 			Login createNewUser = new Login(login, email, password);
 			
@@ -53,24 +45,19 @@ public class ServletCreateUser extends HttpServlet {
 				
 				request.setAttribute("Message", "Both password fields should be equal.");
 				request.setAttribute("formFieldsInfo", createNewUser);
-				request.getRequestDispatcher("create-user.jsp").forward(request, response);
+				request.getRequestDispatcher("/principal/profile.jsp").forward(request, response);
 			}
 			
-			userRepository.create(createNewUser);
-			request.setAttribute("Success", "User created successfully. Go back and login.");
-			request.getRequestDispatcher("create-user.jsp").forward(request, response);
+			userRepository.update(currentEmail, createNewUser);
+			request.getSession().setAttribute("user", createNewUser);
+			request.setAttribute("Success", "Informations have been updated successfully.");
+			request.getRequestDispatcher("/principal/profile.jsp").forward(request, response);
 			
 			
 		}catch(SQLException e) {
 			e.printStackTrace();
 			request.setAttribute("Message", e.getLocalizedMessage());
-			request.getRequestDispatcher("create-user.jsp").forward(request, response);
-			
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
+			request.getRequestDispatcher("/principal/profile.jsp").forward(request, response);
 			
 		}catch(Exception e) {
 			
@@ -78,12 +65,6 @@ public class ServletCreateUser extends HttpServlet {
 			RequestDispatcher redirect = request.getRequestDispatcher("/error.jsp");
 			request.setAttribute("Error", "Some unexpected error happened. Try again later.");
 			redirect.forward(request, response);
-			
-			try {
-				connection.rollback();
-			} catch (SQLException e1) {
-				e1.printStackTrace();
-			}
 			
 		}
 		

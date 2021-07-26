@@ -16,16 +16,20 @@ public class LoginRepository {
 		connection = SingleConnection.getConnection();
 	}
 	
-	public boolean authenticate(Login user) throws SQLException {
+	public Login authenticate(Login user) throws SQLException {
 		
 		String sql = String.format("SELECT * FROM user_info WHERE user_info.login = '%s' AND user_info.password = '%s'", user.getLogin(), user.getPassword());
 		PreparedStatement sqlStatement = connection.prepareStatement(sql);
 		ResultSet result = sqlStatement.executeQuery();
+		Login authenticatedUser = new Login();
 		
 		if(result.next()) {
-			return true;
+			authenticatedUser.setLogin(result.getString(1));
+			authenticatedUser.setPassword(result.getString(2));
+			authenticatedUser.setId(result.getLong(3));
+			authenticatedUser.setEmail(result.getString(4));
 		}
 		
-		return false;
+		return authenticatedUser;
 	}
 }
