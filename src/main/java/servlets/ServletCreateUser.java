@@ -24,7 +24,7 @@ import model.Login;
  * Also, this servlet is handling fetching users too.
  * */
 
-@WebServlet(urlPatterns= {"/ServletCreateUser"})
+@WebServlet(urlPatterns= {"/ServletCreateUser", "/principal/ServletCreateUser"})
 public class ServletCreateUser extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private UserRepository userRepository = new UserRepository();

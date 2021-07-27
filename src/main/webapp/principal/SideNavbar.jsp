@@ -242,23 +242,25 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <h5 class="modal-title" id="exampleModalLabel">Users Found</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div style="max-height: 400px; overflow-y: scroll;" class="modal-body">
        	
        	<table class="table">
 		  <thead>
 		    <tr>
-		      <th scope="col">#</th>
-		      <th scope="col">First</th>
-		      <th scope="col">Last</th>
-		      <th scope="col">Handle</th>
+		      <th scope="col">ID</th>
+		      <th scope="col">Nickname</th>
+		      <th scope="col">Email</th>
+		      <th scope="col">More Info</th>
 		    </tr>
 		  </thead>
 		  <tbody>
+		  
+		  	<!-- The html content of this tbody is going to be replaced with Javascript. Check the FetchUserAndStuff.js file. -->
 		    
 		  </tbody>
 		</table>
@@ -266,46 +268,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <!-- <button type="button" class="btn btn-primary">Save changes</button> -->
       </div>
     </div>
   </div>
 </div>
-                  
-<script>
 
-	function popModal(event){
-		event.preventDefault()
-		const form = document.querySelector("form");
-		const input = form.elements[0];
-		const launchModal = document.querySelector("#launch-modal")
-		const modalBody = document.querySelector(".modal-body")
-		
-		if(input.value && input.value.trim()){
-			launchModal.click()
-			searchUser(input.value, form)
-		}
-	}
-	
-	async function searchUser(nickname, formElement){
-		const url = new URLSearchParams()
-		url.append("fetch-users", "fetch-users")
-		url.append("nickname", nickname)
-		
-		try{
-			
-			const result = await fetch(formElement.action + '?' + url, {
-				 headers: {
-				      'Content-Type': 'application/x-www-form-urlencoded',
-				 }
-			})
-			
-			const x = await result.text()
-			console.log(x)
-			
-		}catch(error){
-			console.error(error)
-		}
-	}
-	
-</script>
+<script type="text/javascript" src="<%= request.getContextPath() %>/scripts/FetchUserAndStuff.js"></script>
