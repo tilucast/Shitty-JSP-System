@@ -28,6 +28,7 @@ public class LoginRepository {
 			authenticatedUser.setPassword(result.getString(2));
 			authenticatedUser.setId(result.getLong(3));
 			authenticatedUser.setEmail(result.getString(4));
+			authenticatedUser.setNickname(result.getString(5));
 		}
 		
 		return authenticatedUser;

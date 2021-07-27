@@ -43,6 +43,12 @@
                                     <label class="float-label">Choose E-mail</label>
                                 </div>
                                 
+                                <div class="form-group form-primary">
+                                    <input id="nickname" type="text" name="nickname" class="form-control" value="${FormFieldsInfo.nickname}" required="">
+                                    <span class="form-bar"></span>
+                                    <label class="float-label">Choose Nickname</label>
+                                </div>
+                                
                                 <div class="row">
                                     <div class="col-sm-6">
                                         <div class="form-group form-primary">

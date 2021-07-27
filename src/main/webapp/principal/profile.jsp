@@ -64,6 +64,12 @@
 							                                        <label class="float-label">Your Email Adress</label>
 							                                    </div>
 							                                    
+							                                    <div class="form-group form-primary">
+							                                        <input type="text" id="nickname" name="nickname" class="form-control" value="${user.getNickname()}" required="">
+							                                        <span class="form-bar"></span>
+							                                        <label class="float-label">Your Nickname</label>
+							                                    </div>
+							                                    
 							                                    <div class="row">
 							                                    
 							                                    	<div class="col-sm-6">
@@ -90,7 +96,8 @@
 							                                    
 							                                    <p style="color: crimson; font-weight: 500;" id="form-message"> ${Message} </p>
 							                                    
-							                                    <button id="submit-button" type="submit" class="btn btn-success btn-md btn-block waves-effect text-center m-b-20" data-dashlane-label="true" data-dashlane-rid="4d7b2dd372de02ba" data-form-type="action,register">Save Info</button>
+							                                    <!-- <button type="button" onclick="update()" id="submit-button" type="submit" class="btn btn-success btn-md btn-block waves-effect text-center m-b-20" data-dashlane-label="true" data-dashlane-rid="4d7b2dd372de02ba" data-form-type="action,register">Save Info</button> -->
+							                                   	<button type="submit" id="submit-button" type="submit" class="btn btn-success btn-md btn-block waves-effect text-center m-b-20" data-dashlane-label="true" data-dashlane-rid="4d7b2dd372de02ba" data-form-type="action,register">Save Info</button> 
 															
 																<p style="color: green; font-weight: 500;" id="success"> ${Success} </p>
 															
@@ -98,6 +105,11 @@
 														
 														</div>
 													
+													</form>
+													
+													<form id="delete-account" class="md-float-material form-material" action="ServletUpdateUser" method="get" onsubmit="handleDeleteAccount(event)">
+														<input type="hidden" name="delete-account" value="delete-account">
+														<button style="margin-left: 20px;" class="btn btn-danger btn-md waves-effect text-center m-b-20">Delete Account</button>
 													</form>
 												
 												</div>
@@ -125,26 +137,82 @@
 	<jsp:include page="JsScripts.jsp"></jsp:include>
 	
 	<script>
-	const form = document.querySelector("#profile-form")
-	const formMessage = document.querySelector("#form-message")
 	
-	function validatePasswords(passwordInput) {
+	// Quick notes:
 		
-		if(form.elements[2].value !== form.elements[3].value){
-			form.elements[4].disabled = true;
+	// There is no reason to do an user update like this. Let the servlet handle all the dirty work. This kind of fetch request are
+	// good for minor request that doesn't require changing any info that is present on the page.
+	
+	async function update() {
+		
+		const error = document.querySelector("#form-message")
+		const success = document.querySelector("#success")
+		
+		error.textContent = "";
+		success.textContent = "";
+		
+		const url = new URLSearchParams();
+		url.append("login", form.elements[0].value);
+		url.append("email", form.elements[1].value);
+		url.append("password", form.elements[2].value);
+		url.append("password", form.elements[3].value);
+		url.append("confirm-password", form.elements[3].value);
+		
+		try{
+			const result = await fetch(form.action, {
+				 method: 'POST',
+				    headers: {
+				      'Content-Type': 'application/x-www-form-urlencoded',
+				    },
+				    body: url
+			})
+			const text = await result.text()
+			
+			result.status != 400 ? success.textContent = text : error.textContent = text
+			
+			console.log(result)
+		}catch(error){
+			console.log(error)
+			error.textContent = error
+		}
+		
+	}
+		
+		
+	</script>
+	
+	<script>
+		const handleDeleteAccount = (event) => {
+			event.preventDefault();
+			const formDelete = document.querySelector("#delete-account");
+			const action = confirm("Are you sure you want to delete your account? This action is irreversible");
+			if(action){
+				formDelete.submit();
+			}
+		}
+	</script>
+	
+	<script>
+	
+	const form = document.querySelector("#profile-form")
+	function validatePasswords(passwordInput) {
+		const formMessage = document.querySelector("#form-message")
+		
+		if(form.elements[3].value !== form.elements[4].value){
+			form.elements[5].disabled = true;
 			formMessage.textContent = "Both password fields should be equal!"
 			
 		} else{
-			form.elements[4].disabled = false;
+			form.elements[5].disabled = false;
 			formMessage.textContent = ""
 			
 		}
 	}
 	
-	form.elements[2].addEventListener("keydown",validatePasswords)
-	form.elements[2].addEventListener("keyup", validatePasswords)
-	form.elements[3].addEventListener("keydown",  validatePasswords)
+	form.elements[3].addEventListener("keydown",validatePasswords)
 	form.elements[3].addEventListener("keyup", validatePasswords)
+	form.elements[4].addEventListener("keydown",  validatePasswords)
+	form.elements[4].addEventListener("keyup", validatePasswords)
 	
 </script>
 

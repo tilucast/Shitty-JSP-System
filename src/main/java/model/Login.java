@@ -10,14 +10,16 @@ public class Login implements Serializable{
 	private String email;
 	private String login;
 	private String password;
+	private String nickname;
 	
 	public Login() {
 		
 	}
 	
-	public Login(String login, String email, String password) {
+	public Login(String login, String email, String nickname, String password) {
 		this.login = login;
 		this.email = email;
+		this.nickname = nickname;
 		this.password = password;
 	}
 	
@@ -42,7 +44,6 @@ public class Login implements Serializable{
 		this.password = password;
 	}
 	
-	
 	public Long getId() {
 		return id;
 	}
@@ -59,11 +60,18 @@ public class Login implements Serializable{
 		this.email = email;
 	}
 
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
 	@Override
 	public String toString() {
-		return "Login [login=" + login + ", password=" + password + "]";
+		return "Login [id=" + id + ", email=" + email + ", login=" + login + ", password=" + password + ", nickname="
+				+ nickname + "]";
 	}
-	
-	
 	
 }

@@ -51,7 +51,7 @@
 			>
 			Login</button>
 			
-			<a href="create-user.jsp"
+			<a href="/curso-jsp/create-user.jsp"
 				class="mt-4 text-sm text-gray-400 hover:text-gray-600 transition-all"
 			>
 			create account</a>

@@ -4,6 +4,9 @@ import java.io.IOException;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import DAO.UserRepository;
 import connection.SingleConnection;
@@ -18,7 +21,7 @@ import model.Login;
 /* 
  * Notes about this Servlet. There is no Filter behind the createUser Route. So, i'm setting and rolling back the connection here.
  * Probably not a very good design, but i don't know how to fix it.
- * 
+ * Also, this servlet is handling fetching users too.
  * */
 
 @WebServlet(urlPatterns= {"/ServletCreateUser"})
@@ -34,7 +37,28 @@ public class ServletCreateUser extends HttpServlet {
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		System.out.println("I am a get request");
+		String action = request.getParameter("fetch-users");
+		String nickname = request.getParameter("nickname");
+		
+		if(action.equals("fetch-users") && !action.isEmpty()) {
+			try {
+				
+				List<Login> users = userRepository.getUsersByNickname(nickname);
+				ObjectMapper objectMapper = new ObjectMapper();
+				
+			      try {
+			         String json = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(users);
+			         response.getWriter().write(json);
+			      } catch(Exception e) {
+			         e.printStackTrace();
+			      }
+				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}catch(Exception e1) {
+				e1.printStackTrace();
+			}
+		}
 	}
 
 	
@@ -44,10 +68,11 @@ public class ServletCreateUser extends HttpServlet {
 			
 			String login = request.getParameter("login");
 			String email = request.getParameter("email");
+			String nickname = request.getParameter("nickname");
 			String password = request.getParameter("password");
 			String confirmPassword = request.getParameter("confirm-password");
 			
-			Login createNewUser = new Login(login, email, password);
+			Login createNewUser = new Login(login, email, nickname, password);
 			
 			if(!password.equals(confirmPassword) || password.isEmpty() || confirmPassword.isEmpty()) {
 				
