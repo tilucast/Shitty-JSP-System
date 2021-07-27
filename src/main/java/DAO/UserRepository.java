@@ -70,10 +70,11 @@ public class UserRepository {
 		
 	}
 	
-	public List<Login> getUsersByNickname(String nickname) throws SQLException {
-		String sql = "SELECT * FROM user_info WHERE user_info.nickname like ? ";
+	public List<Login> getUsersByNickname(String nickname, String currentUserNickname) throws SQLException {
+		String sql = "SELECT * FROM user_info WHERE user_info.nickname like ? AND user_info.nickname != ?";
 		PreparedStatement sqlStatement = connection.prepareStatement(sql);
 		sqlStatement.setString(1, "%" + nickname + "%");
+		sqlStatement.setString(2, currentUserNickname);
 		ResultSet result = sqlStatement.executeQuery();
 		List<Login> users = new ArrayList<Login>();
 		

@@ -40,10 +40,12 @@ public class ServletCreateUser extends HttpServlet {
 		String action = request.getParameter("fetch-users");
 		String nickname = request.getParameter("nickname");
 		
+		String currentUserNickname = ((Login) request.getSession().getAttribute("user")).getNickname();
+		
 		if(action.equals("fetch-users") && !action.isEmpty()) {
 			try {
 				
-				List<Login> users = userRepository.getUsersByNickname(nickname);
+				List<Login> users = userRepository.getUsersByNickname(nickname, currentUserNickname);
 				ObjectMapper objectMapper = new ObjectMapper();
 				
 			      try {
