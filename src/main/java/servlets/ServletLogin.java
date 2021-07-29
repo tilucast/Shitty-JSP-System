@@ -2,8 +2,10 @@ package servlets;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import DAO.LoginRepository;
+import DAO.UserRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -17,6 +19,7 @@ public class ServletLogin extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private LoginRepository loginRepository = new LoginRepository();
+	private UserRepository userRepository = new UserRepository();
     
     public ServletLogin() {
         
@@ -39,7 +42,8 @@ public class ServletLogin extends HttpServlet {
 	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-		
+		String action = request.getParameter("action");
+				
 		try {
 			
 			String login = request.getParameter("login");
@@ -68,9 +72,19 @@ public class ServletLogin extends HttpServlet {
 			}
 			
 			request.getSession().setAttribute("user", currentUser);
-			RequestDispatcher redirect = request.getRequestDispatcher(url);
-			redirect.forward(request, response);
+			RequestDispatcher redirect = request.getRequestDispatcher("/principal/principal.jsp");
+			response.sendRedirect(request.getContextPath() + "/principal/principal.jsp");
+			//redirect.forward(request, response);
 			
+			
+			String loggedUserLogin = ((Login) currentUser).getLogin();
+			try {
+				List<Login> usersFound = userRepository.getAll(loggedUserLogin);
+				request.getSession().setAttribute("usersOnTeam", usersFound);
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+						
 			
 		}catch(SQLException throwable) {
 			throwable.printStackTrace();

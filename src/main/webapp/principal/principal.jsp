@@ -1,7 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+    
+    <%@ taglib prefix="c" uri = "http://java.sun.com/jsp/jstl/core" %>
+    
 <!DOCTYPE html>
 <html lang="en">
+
 
 <jsp:include page="HeadInclude.jsp"></jsp:include>
 
@@ -354,7 +358,20 @@
                                                         </div>
                                                     </div>
                                                     <div class="card-block">
-                                                        <div class="align-middle m-b-30">
+                                                    
+                                                    	<c:forEach items="${ usersOnTeam }" var="userTeam">
+                                                    		
+                                                    		<div class="align-middle m-b-30">
+	                                                            <img src="assets/images/avatar-2.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
+	                                                            <div class="d-inline-block">
+	                                                                <h6>${userTeam.getLogin() }</h6>
+	                                                                <p class="text-muted m-b-0">${userTeam.getNickname()}</p>
+	                                                            </div>
+	                                                        </div>
+                                                    	
+                                                    	</c:forEach>
+                                                    
+                                                       <!--<div class="align-middle m-b-30">
                                                             <img src="assets/images/avatar-2.jpg" alt="user image" class="img-radius img-40 align-top m-r-15">
                                                             <div class="d-inline-block">
                                                                 <h6>David Jones</h6>
@@ -388,7 +405,7 @@
                                                                 <h6>David Jones</h6>
                                                                 <p class="text-muted m-b-0">Developer</p>
                                                             </div>
-                                                        </div>
+                                                        </div> --> 
                                                         <div class="text-center">
                                                             <a href="#!" class="b-b-primary text-primary">View all Projects</a>
                                                         </div>

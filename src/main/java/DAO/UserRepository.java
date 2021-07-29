@@ -34,6 +34,26 @@ public class UserRepository {
 		
 	}
 	
+	public List<Login> getAll(String currentUserLogin) throws SQLException{
+		String sql = String.format("SELECT * FROM user_info WHERE user_info.login != '%s' ", currentUserLogin);
+		PreparedStatement sqlStatement = connection.prepareStatement(sql);
+		List<Login> users = new ArrayList<Login>();
+		ResultSet result = sqlStatement.executeQuery();
+		
+		while(result.next()) {
+			Login user = new Login();
+			user.setLogin(result.getString(1));
+			user.setPassword(result.getString(2));
+			user.setId(result.getLong(3));
+			user.setEmail(result.getString(4));
+			user.setNickname(result.getString(5));
+			
+			users.add(user);
+		}
+		
+		return users;
+	}
+	
 	public Login get(String email) throws SQLException {
 		String sql = String.format("SELECT * FROM user_info WHERE user_info.email = '%s'", email);
 		PreparedStatement sqlStatement = connection.prepareStatement(sql);
